@@ -1,0 +1,94 @@
+# Contact Manager Program
+
+# Initialize an empty contact list
+contact_list = []
+
+def add_contact():
+    name = input("Enter contact name: ")
+    phone = input("Enter contact phone number: ")
+    email = input("Enter contact email address: ")
+    contact = {"name": name, "phone": phone, "email": email}
+    contact_list.append(contact)
+    print("Contact added successfully!")
+
+def view_contacts():
+    if not contact_list:
+        print("No contacts in the list.")
+    else:
+        for i, contact in enumerate(contact_list, 1):
+            print(f"Contact {i}:")
+            print(f"Name: {contact['name']}")
+            print(f"Phone: {contact['phone']}")
+            print(f"Email: {contact['email']}")
+            print()
+
+def edit_contact():
+    if not contact_list:
+        print("No contacts in the list.")
+    else:
+        name = input("Enter the name of the contact to edit: ")
+        for contact in contact_list:
+            if contact["name"] == name:
+                contact["phone"] = input("Enter new phone number: ")
+                contact["email"] = input("Enter new email address: ")
+                print("Contact updated successfully!")
+                return
+        print("Contact not found.")
+
+def delete_contact():
+    if not contact_list:
+        print("No contacts in the list.")
+    else:
+        name = input("Enter the name of the contact to delete: ")
+        for contact in contact_list:
+            if contact["name"] == name:
+                contact_list.remove(contact)
+                print("Contact deleted successfully!")
+                return
+        print("Contact not found.")
+
+def save_contacts_to_file():
+    with open("contacts.txt", "w") as f:
+        for contact in contact_list:
+            f.write(f"{contact['name']},{contact['phone']},{contact['email']}\n")
+    print("Contacts saved to file.")
+
+def load_contacts_from_file():
+    global contact_list
+    contact_list = []
+    try:
+        with open("contacts.txt", "r") as f:
+            for line in f:
+                name, phone, email = line.strip().split(",")
+                contact = {"name": name, "phone": phone, "email": email}
+                contact_list.append(contact)
+        print("Contacts loaded from file.")
+    except FileNotFoundError:
+        print("No contacts file found.")
+
+def main():
+    load_contacts_from_file()
+    while True:
+        print("Contact Manager")
+        print("1. Add Contact")
+        print("2. View Contacts")
+        print("3. Edit Contact")
+        print("4. Delete Contact")
+        print("5. Save and Exit")
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            add_contact()
+        elif choice == "2":
+            view_contacts()
+        elif choice == "3":
+            edit_contact()
+        elif choice == "4":
+            delete_contact()
+        elif choice == "5":
+            save_contacts_to_file()
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if _name_ == "_main_":
+    main()
